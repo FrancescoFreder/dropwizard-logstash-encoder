@@ -63,7 +63,9 @@ public class LogstashTcpAppenderFactory extends AbstractLogstashAppenderFactory 
       customFields = new HashMap<>();
     }
 
-    customFields.putIfAbsent("applicationName", applicationName);
+    if (customFields.containsKey("applicationName")){
+    	customFields.put("applicationName", applicationName);
+    }
     encoder.setCustomFields(LogstashAppenderFactoryHelper.getCustomFieldsFromHashMap(customFields));
 
     if (fieldNames != null) {

@@ -12,26 +12,33 @@ public class LogstashAppenderFactoryHelper {
   public static LogstashFieldNames getFieldNamesFromHashMap(HashMap<String, String> map) {
     LogstashFieldNames fieldNames = new LogstashFieldNames();
 
-    fieldNames.setTimestamp(map.getOrDefault("timestamp", "@timestamp"));
-    fieldNames.setVersion(map.getOrDefault("version", "@version"));
-    fieldNames.setMessage(map.getOrDefault("message", "message"));
-    fieldNames.setLogger(map.getOrDefault("logger", "logger_name"));
-    fieldNames.setThread(map.getOrDefault("thread", "thread_name"));
-    fieldNames.setLevel(map.getOrDefault("level", "level"));
-    fieldNames.setLevelValue(map.getOrDefault("levelValue", "level_value"));
-    fieldNames.setCaller(map.getOrDefault("caller", null));
-    fieldNames.setCallerClass(map.getOrDefault("callerClass", "caller_class_name"));
-    fieldNames.setCallerMethod(map.getOrDefault("callerMethod", "caller_method_name"));
-    fieldNames.setCallerFile(map.getOrDefault("callerFile", "caller_file_name"));
-    fieldNames.setCallerLine(map.getOrDefault("callerLine", "caller_line_number"));
-    fieldNames.setStackTrace(map.getOrDefault("stackTrace", "stack_trace"));
-    fieldNames.setTags(map.getOrDefault("tags", "tags"));
-    fieldNames.setMdc(map.getOrDefault("mdc", null));
-    fieldNames.setContext(map.getOrDefault("context", null));
+    fieldNames.setTimestamp(getOrDefault(map, "timestamp", "@timestamp"));
+    fieldNames.setVersion(getOrDefault(map, "version", "@version"));
+    fieldNames.setMessage(getOrDefault(map, "message", "message"));
+    fieldNames.setLogger(getOrDefault(map, "logger", "logger_name"));
+    fieldNames.setThread(getOrDefault(map, "thread", "thread_name"));
+    fieldNames.setLevel(getOrDefault(map, "level", "level"));
+    fieldNames.setLevelValue(getOrDefault(map, "levelValue", "level_value"));
+    fieldNames.setCaller(getOrDefault(map, "caller", null));
+    fieldNames.setCallerClass(getOrDefault(map, "callerClass", "caller_class_name"));
+    fieldNames.setCallerMethod(getOrDefault(map, "callerMethod", "caller_method_name"));
+    fieldNames.setCallerFile(getOrDefault(map, "callerFile", "caller_file_name"));
+    fieldNames.setCallerLine(getOrDefault(map, "callerLine", "caller_line_number"));
+    fieldNames.setStackTrace(getOrDefault(map, "stackTrace", "stack_trace"));
+    fieldNames.setTags(getOrDefault(map, "tags", "tags"));
+    fieldNames.setMdc(getOrDefault(map, "mdc", null));
+    fieldNames.setContext(getOrDefault(map, "context", null));
 
     return fieldNames;
   }
 
+  public static String getOrDefault(HashMap<String, String> map, Object key, String value){
+	  if (!map.containsKey(key)){
+		  return value;
+	  }
+	  return map.get(key);
+  }
+  
   public static String getCustomFieldsFromHashMap(HashMap<String, String> map) {
     try {
       return objectMapper.writeValueAsString(map);
